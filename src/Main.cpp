@@ -24,8 +24,12 @@ size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp)
 int main(int argc, char *argv[])
 {
     // get params
-    std::string file_type(argv[1]); // solidity || rust
-    std::string link(argv[2]);      // api link
+    std::string link(argv[1]); // api link
+    std::string file_type;
+    if (argc == 3) // ./Main url-endpoint
+    {
+        file_type.append(argv[2]); // solidity || rust
+    }
 
     // only allow one filter per call
     bool rusty = file_type == std::string("rust");
@@ -74,7 +78,7 @@ int main(int argc, char *argv[])
 
     // size is +-361, so it's within the bounds of int32
     int json_length = outer_json.size();
-    std::cout << json_length << std::endl;
+    std::cout << "There are " << json_length << " projects" << std::endl;
 
     int i = 0; // variables need to be initialized
     for (; i < json_length; i++)
@@ -105,12 +109,34 @@ int main(int argc, char *argv[])
     }
     else if (solidity)
     {
+        int i = 0;
+        for (; i < urls.size(); i++)
+        {
+            if (std::regex_search(urls[i], solidity_pattern))
+            {
+                filtered.push_back(urls[i]);
+            }
+        }
     }
 
+    // ┌──────────────────────────────────────────────────────────────────────────────┐
+    // │                                   log assets                                 │
+    // └──────────────────────────────────────────────────────────────────────────────┘
+
     int j = 0;
-    for (; j < filtered.size(); j++)
+    if (filtered.size() != 0)
     {
-        std::cout << filtered[j] << std::endl;
+        for (; j < filtered.size(); j++)
+        {
+            std::cout << filtered[j] << std::endl;
+        }
+    }
+    else // case for which rust == solidity == 0
+    {
+        for (; j < urls.size(); j++)
+        {
+            std::cout << urls[j] << std::endl;
+        }
     }
 
     // Remember that easy handles should be curl_easy_cleanuped.
