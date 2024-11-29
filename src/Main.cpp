@@ -3,8 +3,10 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include <regex>
+#include <vector>
 
-std::string data; // will be used throughout the program
+std::string data;              // will be used throughout the program
+std::vector<std::string> urls; // array of urls
 using json = nlohmann::json;
 
 size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp)
@@ -63,10 +65,24 @@ int main(int argc, char *argv[])
     // libcurl delivers as much as possible as often as possible. [that's pretty cool actually :]
     CURLcode ok = curl_easy_perform(handle);
 
-    // std::cout << data << std::endl; // no log
-    // std::cout << json::parse(data) << std::endl; // error
     json outer_json = json::parse(data);
-    // std::cout << outer_json << std::endl; // error
+
+    // get the desired assets
+
+    // size is +-361, so it's within the bounds of int32
+    int json_length = outer_json.size();
+    std::cout << json_length << std::endl;
+    int i = 0; // variables need to be initialized
+    for (; i < json_length; i++)
+    {
+        json inner_json = outer_json[i]["assets"];
+        int assets_length = inner_json.size();
+        int j = 0;
+        for (; j < assets_length; j++)
+        {
+            std::cout << inner_json[j]["url"] << std::endl;
+        }
+    }
 
     // Remember that easy handles should be curl_easy_cleanuped.
     curl_easy_cleanup(handle);
