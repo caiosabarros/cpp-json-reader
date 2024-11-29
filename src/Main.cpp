@@ -10,6 +10,29 @@ std::vector<std::string> urls;     // array of urls
 std::vector<std::string> filtered; // array of urls
 using json = nlohmann::json;
 
+class RawLogger
+{
+public:
+    void virtual logBool(bool log)
+    {
+        std::cout << "bool" << std::endl;
+    }
+};
+
+class Logger : public RawLogger
+{
+public:
+    void logString(std::string log)
+    {
+        std::cout << log << std::endl;
+    }
+
+    void logBool(bool log) override
+    {
+        std::cout << log << std::endl;
+    }
+};
+
 size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp)
 {
     // totalSize is the number of chunks coming up times the size of each chunck
@@ -31,14 +54,17 @@ int main(int argc, char *argv[])
         file_type.append(argv[2]); // solidity || rust
     }
 
+    // init Logger class
+    Logger logger;
+
     // only allow one filter per call
     bool rusty = file_type == std::string("rust");
     bool solidity = rusty == true ? false : (file_type == std::string("solidity"));
 
     // debug
-    std::cout << rusty << std::endl;
-    std::cout << solidity << std::endl;
-    std::cout << link << std::endl;
+    logger.logBool(rusty);
+    logger.logBool(solidity);
+    logger.logString(link);
 
     // variables
     std::regex rust_pattern("\\.rs$");
@@ -128,14 +154,14 @@ int main(int argc, char *argv[])
     {
         for (; j < filtered.size(); j++)
         {
-            std::cout << filtered[j] << std::endl;
+            logger.logString(filtered[j]);
         }
     }
     else // case for which rust == solidity == 0
     {
         for (; j < urls.size(); j++)
         {
-            std::cout << urls[j] << std::endl;
+            logger.logString(urls[j]);
         }
     }
 
