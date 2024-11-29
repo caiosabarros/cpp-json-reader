@@ -53,4 +53,15 @@ int main(int argc, char *argv[])
     // You can control what data your callback function gets in the fourth argument by setting another property:
     // curl_easy_setopt(handle, CURLOPT_WRITEDATA, &internal_struct);
     curl_easy_setopt(handle, CURLOPT_WRITEDATA, &internal_struct);
+
+    // curl_easy_perform connects to the remote site, does the necessary commands and performs the transfer.
+    // Whenever it receives data, it calls the callback function we previously set.
+    // The function may get one byte at a time, or it may get many kilobytes at once.
+    // libcurl delivers as much as possible as often as possible. [that's pretty cool actually :]
+    bool ok = curl_easy_perform(handle);
+
+    std::cout << data << std::endl; // no log
+
+    // Remember that easy handles should be curl_easy_cleanuped.
+    curl_easy_cleanup(handle);
 }
