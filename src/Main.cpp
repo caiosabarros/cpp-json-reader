@@ -1,9 +1,11 @@
 #include <iostream>
 #include <curl/curl.h>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <regex>
 
 std::string data; // will be used throughout the program
+using json = nlohmann::json;
 
 size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp)
 {
@@ -44,7 +46,8 @@ int main(int argc, char *argv[])
 
     // One of the most basic properties to set in the handle is the URL.
     //  curl_easy_setopt(handle, CURLOPT_URL, "http://domain.com/");
-    curl_easy_setopt(handle, CURLOPT_URL, link);
+    // https://cplusplus.com/reference/string/string/c_str/ since curl_easy_setopt expects `const char*` type
+    curl_easy_setopt(handle, CURLOPT_URL, link.c_str());
 
     // You tell libcurl to pass all data to this function by issuing a function similar to this:
     //  curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data);
@@ -58,9 +61,12 @@ int main(int argc, char *argv[])
     // Whenever it receives data, it calls the callback function we previously set.
     // The function may get one byte at a time, or it may get many kilobytes at once.
     // libcurl delivers as much as possible as often as possible. [that's pretty cool actually :]
-    bool ok = curl_easy_perform(handle);
+    CURLcode ok = curl_easy_perform(handle);
 
-    std::cout << data << std::endl; // no log
+    // std::cout << data << std::endl; // no log
+    // std::cout << json::parse(data) << std::endl; // error
+    json outer_json = json::parse(data);
+    // std::cout << outer_json << std::endl; // error
 
     // Remember that easy handles should be curl_easy_cleanuped.
     curl_easy_cleanup(handle);
