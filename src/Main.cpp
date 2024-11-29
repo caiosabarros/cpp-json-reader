@@ -1,6 +1,7 @@
 #include <iostream>
 #include <curl/curl.h>
 #include <string>
+#include <regex>
 
 int main(int argc, char *argv[])
 {
@@ -14,4 +15,11 @@ int main(int argc, char *argv[])
 
     std::cout << rusty << std::endl;
     std::cout << solidity << std::endl;
+
+    std::regex rust_pattern("\\.rs$");
+    std::regex solidity_pattern("\\.sol$");
+
+    // To use the easy interface, you must first create yourself an easy handle.
+    // You need one handle for each easy session you want to perform.
+    CURL *handle = curl_easy_init();
 }
