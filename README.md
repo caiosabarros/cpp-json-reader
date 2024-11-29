@@ -15,7 +15,7 @@ The tools that enabled this software to exist are:
 - [nlohmann/json](https://github.com/nlohmann/json)
 
 Each of them being:
-- `C++`
+- `C++` is a cross-platform language that can be used to create high-performance applications.
 - `libcurl` is probably the most portable, most powerful and most often used network transfer library on this planet.
 - `nlohmann/json` is a JSON handler within C++.
 
