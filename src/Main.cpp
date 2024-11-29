@@ -95,15 +95,22 @@ int main(int argc, char *argv[])
     if (rusty)
     {
         int i = 0;
-        for (; i < json_length; i++)
+        for (; i < urls.size(); i++)
         {
-            json inner_json = outer_json[i]["assets"];
-            int assets_length = inner_json.size();
-            int j = 0;
+            if (std::regex_search(urls[i], rust_pattern))
+            {
+                filtered.push_back(urls[i]);
+            }
         }
     }
     else if (solidity)
     {
+    }
+
+    int j = 0;
+    for (; j < filtered.size(); j++)
+    {
+        std::cout << filtered[j] << std::endl;
     }
 
     // Remember that easy handles should be curl_easy_cleanuped.
