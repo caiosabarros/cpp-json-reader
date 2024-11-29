@@ -13,6 +13,7 @@ using json = nlohmann::json;
 class RawLogger
 {
 public:
+    // dumb log method
     void virtual logBool(bool log)
     {
         std::cout << "bool" << std::endl;
@@ -22,17 +23,26 @@ public:
 class Logger : public RawLogger
 {
 public:
+    // log string method
     void logString(std::string log)
     {
         std::cout << log << std::endl;
     }
 
+    // smart bool log
     void logBool(bool log) override
     {
         std::cout << log << std::endl;
     }
 };
 
+/**
+ * From libcurl docs:
+ * Since you write a sort of application that needs this transfer, I assume that you would like to get the data passed to you directly instead of simply getting it passed to stdout.
+ * So, you write your own function that matches this prototype:
+        size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp);
+  You tell libcurl to pass all data to this function by issuing a function similar to this:
+ */
 size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp)
 {
     // totalSize is the number of chunks coming up times the size of each chunck
@@ -44,6 +54,7 @@ size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp)
     return totalSize;
 }
 
+// application entrypoint function
 int main(int argc, char *argv[])
 {
     // get params
