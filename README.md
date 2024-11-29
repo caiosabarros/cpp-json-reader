@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a C++ program to fetch urls in a specific JSON returned by an API endpoint. The program handles both the call to the endpoint using the globally famous [libcurl]() package and it does log the urls found. An argument might be passed to filter the `rust` or `solidity` files.
+This is a C++ program to fetch urls in a specific JSON returned by an API endpoint. The program handles both the call to the endpoint using the globally famous [libcurl](https://curl.se/libcurl/) package and it does log the urls found. An argument might be passed to filter the `rust` or `solidity` files.
 
 ## Motivation
 The purpose of this program is to assist me on my efforts as a security researcher. This will enable me have quicker results for the target assets I will be exploring.
