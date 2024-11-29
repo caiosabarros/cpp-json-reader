@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 
     std::cout << rusty << std::endl;
     std::cout << solidity << std::endl;
+    std::cout << link << std::endl;
 
     std::regex rust_pattern("\\.rs$");
     std::regex solidity_pattern("\\.sol$");
@@ -22,4 +23,10 @@ int main(int argc, char *argv[])
     // To use the easy interface, you must first create yourself an easy handle.
     // You need one handle for each easy session you want to perform.
     CURL *handle = curl_easy_init();
+
+    // You set properties and options for this handle using curl_easy_setopt.
+
+    // One of the most basic properties to set in the handle is the URL.
+    //  curl_easy_setopt(handle, CURLOPT_URL, "http://domain.com/");
+    curl_easy_setopt(handle, CURLOPT_URL, link);
 }
